@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: flatris
+  name: flatris
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 3 # 1 default
+  selector:
+    matchLabels:
+      app: flatris
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: flatris
+    spec:
+      containers:
+      - image: registry.gitlab.com/baklaev/flatris:latest
+        imagePullPolicy: Always
+        name: flatris
+      restartPolicy: Always
