@@ -7,7 +7,8 @@ COPY package.json /app
 RUN yarn install
 
 COPY . /app
-RUN yarn test
+# moved tests to CI
+# RUN yarn test 
 RUN yarn build
 
 CMD yarn start
