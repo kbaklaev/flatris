@@ -1,0 +1,16 @@
+image: docker
+
+services:
+- docker:dind
+
+before_script:
+  - export
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" registry.gitlab.com
+
+build:
+  stage: build
+  script:
+    - docker pull registry.gitlab.com/baklaev/flatris:latest || true
+    - docker build --cache-from registry.gitlab.com/baklaev/flatris:latest --tag registry.gitlab.com/baklaev/flatris:latest --tag "registry.gitlab.com/baklaev/flatris:$CI_COMMIT_SHA" .
+    - docker push registry.gitlab.com/baklaev/flatris:latest
+    - docker push "registry.gitlab.com/baklaev/flatris:$CI_COMMIT_SHA"
